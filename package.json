@@ -1,10 +1,12 @@
 {
   "name": "jobs-api",
   "version": "1.0.0",
+  "type": "module",
   "description": "Jobs API project",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon  ./app.js"
   },
   "author": "Fuad2199",
   "license": "ISC",
