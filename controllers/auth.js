@@ -4,11 +4,12 @@ import BadRequestError from "../errors/bad-request.js"
 import bcrypt from "bcryptjs"
 
 export const register = async (req, res) => {
-    const {name, email, password} = req.body
+    // const {name, email, password} = req.body
     
-    const salt = await bcrypt.genSalt(10);
+    // const salt = await bcrypt.genSalt(10);
+    // const hashedPassword = await bcrypt.hash(password, salt)
 
-    const tampUser = {name,email,password}
+    // const tampUser = {name,email,password:hashedPassword}
 
     const user = await User.create({...req.body})
     res.status(StatusCodes.CREATED).json({ 
@@ -21,7 +22,7 @@ export const login = async (req, res) => {
     res.send('login user')
 }
 
-export default {
+export default{
     register,
     login
 }
