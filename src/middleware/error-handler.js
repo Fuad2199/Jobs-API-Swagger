@@ -1,6 +1,8 @@
 import { StatusCodes, getReasonPhrase } from "http-status-codes";
 
+//=============== Error Mapping starts =================
 const mapError = (err) => {
+  // Handle ValidationError (e.g., missing required fields)
   if (err.name === "ValidationError") {
     const fieldErrors = {};
     for (const field in err.errors) {
@@ -18,6 +20,7 @@ const mapError = (err) => {
     };
   }
 
+  // Handle CastError (e.g., invalid ID format)
   if (err.name === "CastError") {
     return {
       fieldErrors: {
@@ -32,6 +35,7 @@ const mapError = (err) => {
     };
   }
 
+  // Handle MongoDB Duplicate Key Error (e.g., unique constraint violation)
   if (err.name === "MongoError" && err.code === 11000) {
     const field = Object.keys(err.keyValue)[0];
     const value = err.keyValue[field];
@@ -50,7 +54,7 @@ const mapError = (err) => {
     };
   }
 
-  // Default error
+  // Default error handler for other types of errors
   return {
     fieldErrors: {
       general: {
@@ -63,12 +67,17 @@ const mapError = (err) => {
     statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
   };
 };
+//=============== Error Mapping ends =================
 
+
+//=============== Error Handler Middleware starts =================
 const errorHandlerMiddleware = (err, req, res, next) => {
+  // Map the error using mapError function
   const { fieldErrors, statusCode } = mapError(err);
 
   const errors = {};
 
+  // Process each field error and add additional details
   for (const field in fieldErrors) {
     const fieldError = fieldErrors[field];
     errors[field] = {
@@ -81,17 +90,22 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     };
   }
 
+  // Prepare the response object
   const response = {
     err: {
       errors
     }
   };
 
+  // Add stack trace in development environment
   if (process.env.NODE_ENV === "development") {
     response.stack = err.stack;
   }
 
+  // Send the error response with appropriate status code
   return res.status(statusCode).json(response);
 };
+//=============== Error Handler Middleware ends =================
+
 
 export default errorHandlerMiddleware;
