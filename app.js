@@ -1,10 +1,10 @@
 import express from "express";
 import "express-async-errors"; 
 import {} from "dotenv/config";
-import connectDB from "./db/connect.js";
-import authRouter from "./routes/auth.js";
-import notFoundMiddleware from "./middleware/not-found.js";
-import errorHandlerMiddleware from "./middleware/error-handler.js";
+import connectDB from "./src/db/connect.js";
+import authRouter from "./src/routes/auth.js";
+import notFoundMiddleware from "./src/middleware/not-found.js";
+import errorHandlerMiddleware from "./src/middleware/error-handler.js";
 import cors from 'cors';
 
 const app = express();
