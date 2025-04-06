@@ -4,6 +4,8 @@ import {} from "dotenv/config";
 
 // connect database
 import connectDB from "./db/connect.js";
+
+// connect controller auth.js
 import authRouter from "./routes/auth.js"
 import notFoundMiddleware from "./middleware/not-found.js" 
 import errorHandlerMiddleware from "./middleware/error-handler.js";

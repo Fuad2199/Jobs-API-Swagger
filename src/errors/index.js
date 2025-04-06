@@ -4,8 +4,10 @@ import NotFoundError from "./not-found";
 import BadRequestError from "./bad-request";
 
 export default() =>{
-    CustomAPIError,
-    UnauthenticatedError,
-    NotFoundError,
-    BadRequestError
+    return {
+        CustomAPIError,
+        UnauthenticatedError,
+        NotFoundError,
+        BadRequestError
+    }
 }
