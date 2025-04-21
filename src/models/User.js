@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken"
 
 //=============== User Schema starts =================
-const userSchema = new mongoose.Schema(
+const UserSchema = new mongoose.Schema(
   {
     email: {
       type: String,
@@ -23,10 +25,29 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true } // Automatically add `createdAt` and `updatedAt` timestamps
 );
+
+UserSchema.pre('save', async function () {
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt)
+})
+
+UserSchema.methods.createJWT = function () {
+  return jwt.sign({ userId: this._id, name: this.name }, 
+    process.env.JWT_SECRET, 
+  {
+    expiresIn: process.env.JWT_LIFETIME,
+  }
+ )
+}
+
+UserSchema.methods.comparePassword = async function (canditatePassword) {
+  const isMatch = await bcrypt.compare(canditatePassword, this.password)
+  return isMatch;
+}
 //=============== User Schema ends =================
 
 //=============== Mongoose Model starts =================
-const User = mongoose.model('User', userSchema); // Create the User model using the schema
+const User = mongoose.model('User', UserSchema); // Create the User model using the schema
 //=============== Mongoose Model ends =================
 
 export default User; // Export the User model for use in other parts of the application

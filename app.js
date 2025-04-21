@@ -3,20 +3,23 @@ import "express-async-errors";
 import {} from "dotenv/config";
 import connectDB from "./src/db/connect.js";
 import authRouter from "./src/routes/auth.js";
+import jobsRouter from "./src/routes/jobs.js"
 import notFoundMiddleware from "./src/middleware/not-found.js";
 import errorHandlerMiddleware from "./src/middleware/error-handler.js";
 import cors from 'cors';
+import authenticationUser from "./src/middleware/authentication.js"
 
 const app = express();
 
-//=============== Middleware Setup starts =================
+//=============== MIDDLEWARE SETUP STARTS =================
 app.use(express.json()); // Parse JSON requests
 app.use(cors()); // Enable CORS
-//=============== Middleware Setup ends =================
+//=============== MIDDLEWARE SETUP ENDS =================
 
-//=============== API Routes Setup starts =================
+//=============== API ROUTES SETUP STARTS =================
 app.use('/api/v1/auth', authRouter); // Authentication routes
-//=============== API Routes Setup ends =================
+app.use('/api/v1/jobs', authenticationUser, jobsRouter); // Authentication routes
+//=============== API ROUTES SETUP ENDS =================
 
 //=============== Error Handling Middleware starts =================
 app.use(notFoundMiddleware); // 404 handler

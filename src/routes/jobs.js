@@ -1,15 +1,16 @@
 import express from "express";
-const router = express.Router()
 
 import {
     getAllJobs,
-    getJobs,
-    createJobs,
-    updateJobs,
-    deleteJobs
-} from "../controllers/jobs"
+    getJob,
+    createJob,
+    updateJob,
+    deleteJob,
+} from "../controllers/jobs.js"; // .js uzantısını mütləq yaz!
 
-router.route('/').post(createJobs).get(getAllJobs)
-router.route('/:id').get(getJobs).delete(deleteJobs).patch(updateJobs)
+const router = express.Router();
 
-export default router
+router.route('/').post(createJob).get(getAllJobs);
+router.route('/:id').get(getJob).delete(deleteJob).patch(updateJob);
+
+export default router;
