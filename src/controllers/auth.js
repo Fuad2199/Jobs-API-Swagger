@@ -4,54 +4,53 @@ import BadRequestError from "../errors/bad-request.js"
 import UnauthenticatedError from "../errors/unauthenticated.js";
 
 //=============== Register user handler starts =================
-export const register = async (req, res) => {
-    const user = await User.create({ ...req.body })
-    const token = user.createJWT()
-    res
-        .status(StatusCodes.CREATED)
-        .json({ user: { name: user.name }, token });
-    // Check if the email already exists in the database
-    // const existingUser = await User.findOne({ email });
-    // if (existingUser) {
-    //     throw new BadRequestError("Email already in use");
-    // }
+export const register = async (req, res, next) => {
+    try {
+        const user = await User.create({ ...req.body })
+        const token = user.createJWT()
+        res
+            .status(StatusCodes.CREATED)
+            .json({ user: { name: user.name }, token });
+    } catch (error) {
+        next(error)
+    }
 
-    // Send response indicating success
 };
 //=============== Register user handler ends =================
 
 
 //=============== Login user handler starts =================
-export const login = async (req, res) => {
-    const { email, password } = req.body;
+export const login = async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
 
-    if (!email || !password) {
-        throw new BadRequestError('Please provide email and password')
-    }
-    const user = await User.findOne({ email })
+        if (!email || !password) {
+            throw new BadRequestError('Please provide email and password')
+        }
+        const user = await User.findOne({ email })
 
-    if (!user) {
-        throw new UnauthenticatedError("Invalid Credentials")
+        if (!user) {
+            throw new UnauthenticatedError("Invalid Credentials")
+        }
+
+        const isPasswordCorrect = await user.comparePassword(password)
+        if (!isPasswordCorrect) {
+            throw new UnauthenticatedError('Invalid Credentials')
+        }
+        // compare password
+        const token = user.createJWT();
+        res.status(StatusCodes.OK).json({ user: { name: user.name }, token })
+    } catch (error) {
+        next(error)
     }
 
-    const isPasswordCorrect = await user.comparePassword(password)
-    if (!isPasswordCorrect) {
-        throw new UnauthenticatedError('Invalid Credentials')
-    }
-    // compare password
-    const token = user.createJWT();
-    res.status(StatusCodes.OK).json({ user: { name: user.name }, token })
-    //     // If credentials are correct, send success response
-    //     res.status(StatusCodes.OK).json({
-    //         success: true,
-    //         msg: "Login successful",
-    //         user: { name: user.name, email: user.email, _id: user._id },
-    //     });
 };
 //=============== Login user handler ends =================
 
 
-export default () => {
+const authHandlers = {
     register,
-        login
+    login
 }
+
+export default authHandlers;
