@@ -8,12 +8,19 @@ import notFoundMiddleware from "./src/middleware/not-found.js";
 import errorHandlerMiddleware from "./src/middleware/error-handler.js";
 import cors from 'cors';
 import authenticationUser from "./src/middleware/authentication.js"
+// Extra security packages
+import helmet from "helmet";
+import xss from "xss-clean"
+import rateLimit from "express-rate-limit";
 
 const app = express();
 
+
 //=============== MIDDLEWARE SETUP STARTS =================
 app.use(express.json()); // Parse JSON requests
+app.use(helmet());
 app.use(cors()); // Enable CORS
+app.use
 //=============== MIDDLEWARE SETUP ENDS =================
 
 //=============== API ROUTES SETUP STARTS =================

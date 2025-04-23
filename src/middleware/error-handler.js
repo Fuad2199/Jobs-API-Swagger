@@ -1,6 +1,6 @@
 import { StatusCodes, getReasonPhrase } from "http-status-codes";
 
-//=============== Error Mapping starts =================
+//========================= Error Mapping starts =======================
 const mapError = (err) => {
   // Handle ValidationError (e.g., missing required fields)
   if (err.name === "ValidationError") {

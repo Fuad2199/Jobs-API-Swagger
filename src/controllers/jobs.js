@@ -1,8 +1,8 @@
 import BadRequestError from "../errors/bad-request.js";
 import Job from "../models/Job.js";
 import { StatusCodes } from "http-status-codes";
-import { NotFoundError } from "../errors/not-found.js";
-//=============== Job Handlers starts =================
+import NotFoundError from "../errors/not-found.js";
+//=============== CRUD JOB HANDLERS STARTS =================
 
 // Handler to get all jobs
 export const getAllJobs = async (req, res) => {
@@ -63,9 +63,9 @@ export const deleteJob = async (req, res) => {
     }
     res.status(StatusCodes.OK).send({ msg: 'Job deleted successfully' })
 }
-//=============== Job Handlers ends =================
+//=============== CRUD JOB HANDLERS ENDS =================
 
-//=============== Export Handlers starts =================
+//=============== EXPORT HANDLERS STARTS =================
 const jobHandlers = {
     getAllJobs,
     getJob,
@@ -75,4 +75,4 @@ const jobHandlers = {
 };
 
 export default jobHandlers;
-//=============== Export Handlers ends =================
+//=============== EXPORT HANDLERS ENDS =================
