@@ -8,7 +8,11 @@ const MONGO_URI = process.env.MONGO_URI; // Get MongoDB URI from environment var
 const connectDB = async () => {
     try {
         // Attempt to connect to MongoDB
-        await mongoose.connect(MONGO_URI);
+        await mongoose.connect(MONGO_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            serverSelectionTimeoutMS: 300000, // 10 saniyə timeout
+        });
         console.log("Successfully connected to DB"); // Log success message on successful connection
     } catch (error) {
         // If connection fails, log the error and exit the process

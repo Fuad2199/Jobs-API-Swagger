@@ -27,6 +27,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.12.1",
     "nodemon": "^3.1.9",
+    "prettier": "^3.5.3",
     "rate-limiter": "^0.2.0",
     "swagger-ui-express": "^5.0.1",
     "winston": "^3.17.0",
