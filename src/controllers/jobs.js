@@ -6,9 +6,13 @@ import NotFoundError from "../errors/not-found.js";
 
 // Handler to get all jobs
 export const getAllJobs = async (req, res) => {
-    const jobs = await Job.find({ createdBy: req.user.userId }).sort('createdAt')
-    res.status(StatusCodes.OK).json({ jobs, count: jobs.length })
-}
+  try {
+    const jobs = await Job.find({ createdBy: req.user.userId }); // Əgər auth varsa
+    res.status(200).json(jobs);
+  } catch (error) {
+    res.status(StatusCodes.OK).json({ message: "Server xətası" });
+  }
+};
 
 // Handler to get a single job
 export const getJob = async (req, res) => {
