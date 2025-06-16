@@ -48,12 +48,15 @@ const port = process.env.PORT || 3000;
 //=============== Server Start and DB Connection starts =================
 const start = async () => {
   try {
+    console.log("Connecting to DB...");
     await connectDB(process.env.MONGO_URI);
+    console.log("Connected to DB");
+    console.log("Starting server...");
     app.listen(port, '0.0.0.0', () =>
       console.log(`Server is listening on port ${port}...`)
     );
   } catch (error) {
-    console.log(error); // Log errors
+    console.error("Startup error:", error);
   }
 };
 
